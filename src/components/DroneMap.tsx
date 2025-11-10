@@ -9,15 +9,15 @@ interface Drone {
 }
 
 const mockDrones: Drone[] = [
-  { id: "D-001", position: { x: 25, y: 30 }, status: "responding", assignment: "Banjir Jakarta Utara" },
-  { id: "D-002", position: { x: 60, y: 45 }, status: "active", assignment: "Gempa Bandung" },
-  { id: "D-003", position: { x: 40, y: 65 }, status: "responding", assignment: "Longsor Bogor" },
-  { id: "D-004", position: { x: 75, y: 25 }, status: "active", assignment: "Banjir Bekasi" },
-  { id: "D-005", position: { x: 50, y: 80 }, status: "returning", assignment: "Patroli Selesai" },
+  { id: "D-001", position: { x: 25, y: 30 }, status: "responding", assignment: "Flood - North Jakarta" },
+  { id: "D-002", position: { x: 60, y: 45 }, status: "active", assignment: "Earthquake - Bandung" },
+  { id: "D-003", position: { x: 40, y: 65 }, status: "responding", assignment: "Landslide - Bogor" },
+  { id: "D-004", position: { x: 75, y: 25 }, status: "active", assignment: "Flood - Bekasi" },
+  { id: "D-005", position: { x: 50, y: 80 }, status: "returning", assignment: "Patrol Complete" },
 ];
 
 const disasterLocations = [
-  { name: "Jakarta Utara", x: 30, y: 35, severity: "critical" },
+  { name: "North Jakarta", x: 30, y: 35, severity: "critical" },
   { name: "Bandung", x: 65, y: 50, severity: "high" },
   { name: "Bogor", x: 45, y: 70, severity: "medium" },
   { name: "Bekasi", x: 70, y: 30, severity: "high" },
@@ -59,9 +59,9 @@ export function DroneMap() {
 
         {/* Region labels */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-4 left-4 text-slate-600 text-xs">Jawa Barat</div>
-          <div className="absolute top-4 right-4 text-slate-600 text-xs">Jawa Tengah</div>
-          <div className="absolute bottom-4 left-4 text-slate-600 text-xs">DKI Jakarta</div>
+          <div className="absolute top-4 left-4 text-slate-600 text-xs">West Java</div>
+          <div className="absolute top-4 right-4 text-slate-600 text-xs">Central Java</div>
+          <div className="absolute bottom-4 left-4 text-slate-600 text-xs">Jakarta</div>
         </div>
 
         {/* Disaster locations */}
@@ -105,19 +105,19 @@ export function DroneMap() {
       <div className="flex items-center gap-6 text-sm flex-wrap">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-red-500" />
-          <span className="text-slate-600">Merespons</span>
+          <span className="text-slate-600">Responding</span>
         </div>
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-green-500" />
-          <span className="text-slate-600">Aktif/Siaga</span>
+          <span className="text-slate-600">Active/Ready</span>
         </div>
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-blue-500" />
-          <span className="text-slate-600">Kembali</span>
+          <span className="text-slate-600">Returning</span>
         </div>
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-red-500" />
-          <span className="text-slate-600">Lokasi Bencana</span>
+          <span className="text-slate-600">Disaster Location</span>
         </div>
       </div>
     </div>

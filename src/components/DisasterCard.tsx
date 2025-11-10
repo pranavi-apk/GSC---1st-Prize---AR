@@ -1,6 +1,7 @@
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Users, MapPin, Clock, Plane } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface DisasterCardProps {
   type: string;
@@ -21,6 +22,7 @@ export function DisasterCard({
   time,
   severity 
 }: DisasterCardProps) {
+  const { t } = useTranslation();
   const severityColors = {
     critical: "bg-red-100 text-red-800 border-red-300",
     high: "bg-orange-100 text-orange-800 border-orange-300",
@@ -51,11 +53,11 @@ export function DisasterCard({
         </div>
         <div className="flex flex-col items-end gap-2">
           <Badge className={severityColors[severity]}>
-            {severity === "critical" ? "Kritis" : severity === "high" ? "Tinggi" : "Sedang"}
+            {severity === "critical" ? t('severity_critical') : severity === "high" ? t('severity_high') : t('severity_medium')}
           </Badge>
           <div className="flex items-center gap-1">
             <div className={`w-2 h-2 rounded-full ${statusColors[status]}`}></div>
-            <span className="text-xs text-slate-600">{statusText[status]}</span>
+            <span className="text-xs text-slate-600">{status === 'active' ? t('status_active') : status === 'monitoring' ? t('status_monitoring') : t('status_resolved')}</span>
           </div>
         </div>
       </div>
@@ -66,7 +68,7 @@ export function DisasterCard({
             <Users className="w-4 h-4 text-blue-600" />
           </div>
           <div>
-            <div className="text-xs text-slate-500">Warga Terdampak</div>
+            <div className="text-xs text-slate-500">{t('people_affected_label')}</div>
             <div className="text-slate-900">{peopleAffected.toLocaleString()}</div>
           </div>
         </div>
@@ -76,7 +78,7 @@ export function DisasterCard({
             <Plane className="w-4 h-4 text-green-600" />
           </div>
           <div>
-            <div className="text-xs text-slate-500">Drone Dikirim</div>
+            <div className="text-xs text-slate-500">{t('drones_deployed_label')}</div>
             <div className="text-slate-900">{dronesDeployed}</div>
           </div>
         </div>

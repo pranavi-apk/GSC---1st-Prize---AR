@@ -34,25 +34,25 @@ export function Chatbot() {
     },
     {
       id: 4,
-      text: "Apa yang harus saya lakukan saat gempa bumi?",
+      text: "What should I do during an earthquake?",
       isUser: true,
       timestamp: new Date(Date.now() - 120000), // 2 minutes ago
     },
     {
       id: 5,
-      text: "Saat gempa bumi, lindungi kepala dan leher Anda, berlindung di bawah meja yang kuat, dan jauhi jendela. Setelah guncangan berhenti, evakuasi ke tempat terbuka.",
+      text: "During an earthquake, protect your head and neck, shelter under a sturdy table, and stay away from windows. After shaking stops, evacuate to an open area.",
       isUser: false,
       timestamp: new Date(Date.now() - 60000), // 1 minute ago
     },
     {
       id: 6,
-      text: "Bagaimana cara membuat kit darurat?",
+      text: "How do I make an emergency kit?",
       isUser: true,
       timestamp: new Date(Date.now() - 30000), // 30 seconds ago
     },
     {
       id: 7,
-      text: "Kit darurat harus mencakup air (1 galon per orang per hari), makanan non-perishable, senter, baterai, obat-obatan, salinan dokumen penting, dan radio darurat.",
+      text: "An emergency kit should include water (1 gallon per person per day), non-perishable food, a flashlight, batteries, medications, copies of important documents, and an emergency radio.",
       isUser: false,
       timestamp: new Date(), // now
     }

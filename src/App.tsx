@@ -51,7 +51,7 @@ export default function App() {
     setIsAuthenticated(true);
     setUser({
       name: phone,
-      email: `${phone}@siagabencana.id`
+      email: `${phone}@resilient360.id`
     });
   };
 
@@ -89,39 +89,39 @@ export default function App() {
 
   const activeDisasters = [
     {
-      type: "Banjir Bandang",
-      location: "Jakarta Utara, DKI Jakarta",
+      type: "Flash Flood",
+      location: "North Jakarta, DKI Jakarta",
       peopleAffected: 2500,
       dronesDeployed: 4,
       status: "active" as const,
-      time: "2 jam yang lalu",
+      time: "2 hours ago",
       severity: "critical" as const
     },
     {
-      type: "Gempa Bumi 6.2 SR",
-      location: "Bandung, Jawa Barat",
+      type: "Earthquake 6.2 M",
+      location: "Bandung, West Java",
       peopleAffected: 5200,
       dronesDeployed: 8,
       status: "active" as const,
-      time: "5 jam yang lalu",
+      time: "5 hours ago",
       severity: "high" as const
     },
     {
-      type: "Tanah Longsor",
-      location: "Bogor, Jawa Barat",
+      type: "Landslide",
+      location: "Bogor, West Java",
       peopleAffected: 850,
       dronesDeployed: 3,
       status: "monitoring" as const,
-      time: "8 jam yang lalu",
+      time: "8 hours ago",
       severity: "medium" as const
     },
     {
-      type: "Banjir",
-      location: "Bekasi, Jawa Barat",
+      type: "Flood",
+      location: "Bekasi, West Java",
       peopleAffected: 1200,
       dronesDeployed: 2,
       status: "monitoring" as const,
-      time: "12 jam yang lalu",
+      time: "12 hours ago",
       severity: "high" as const
     }
   ];
@@ -229,10 +229,10 @@ export default function App() {
             {/* Emergency Alert */}
             {showEmergencyAlert && (
               <EmergencyAlert
-                type="Banjir Bandang"
-                location="Jakarta Utara - Segera evakuasi ke tempat yang lebih tinggi"
+                type="Flash Flood"
+                location="North Jakarta - Evacuate to higher ground immediately"
                 severity="critical"
-                time="2 jam yang lalu"
+                time="2 hours ago"
                 onDismiss={() => setShowEmergencyAlert(false)}
               />
             )}
@@ -305,8 +305,8 @@ export default function App() {
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-3">
-                    <p className="text-slate-900 mb-1">Tim SAR Evakuasi 45 Keluarga</p>
-                    <p className="text-xs text-slate-600">Jakarta Utara • 2 jam lalu</p>
+                    <p className="text-slate-900 mb-1">SAR Team Evacuates 45 Families</p>
+                    <p className="text-xs text-slate-600">North Jakarta • 2 hours ago</p>
                   </div>
                 </div>
                 <div className="bg-white rounded-xl overflow-hidden shadow-sm">
@@ -316,8 +316,8 @@ export default function App() {
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-3">
-                    <p className="text-slate-900 mb-1">Drone Kirim Obat Darurat</p>
-                    <p className="text-xs text-slate-600">Bandung • 5 jam lalu</p>
+                    <p className="text-slate-900 mb-1">Drone Delivers Emergency Medicine</p>
+                    <p className="text-xs text-slate-600">Bandung • 5 hours ago</p>
                   </div>
                 </div>
               </div>

@@ -3,6 +3,141 @@ import { initReactI18next } from 'react-i18next';
 
 // Translation resources
 const resources = {
+  en: {
+    translation: {
+      // Common terms
+      "welcome": "Welcome",
+      "login": "Sign In",
+      "email": "Email",
+      "phone_number": "Phone Number",
+      "password": "Password",
+      "enter_password": "Enter your password",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot password?",
+      "dont_have_account": "Don't have an account?",
+      "register_now": "Register now",
+      "logout": "Sign Out",
+      "settings": "Settings",
+      "notifications": "Notifications",
+      "profile": "My Profile",
+      "language": "Language",
+      "font_size": "Font Size",
+      "normal": "Normal",
+      "large": "Large",
+      "extra_large": "Extra Large",
+      "loading": "Loading...",
+      "chatbot": "AI Assistant",
+      "image_request": "Image Request",
+      "online": "Online",
+      "ai_assistant": "AI Assistant",
+      "type_your_message": "Type your message...",
+      "take_photo": "Take Photo",
+      "photo_instruction": "Take a photo of the affected area",
+      "open_camera": "Open Camera",
+      "damage_photo": "Damage Photo",
+      "location_detected": "Location Detected",
+      "jakarta_location": "Jakarta, Indonesia",
+      "describe_needs": "Describe your needs",
+      "needs_placeholder": "e.g.: Food, drinking water, medicine, blankets",
+      "submit_request": "Submit Request",
+      "request_submitted": "Request Submitted",
+      "drone_dispatched": "A drone has been dispatched to your location",
+      "estimated_arrival": "Estimated arrival",
+      "minutes": "minutes",
+      "items_delivered": "Items delivered",
+      "emergency_supplies": "Emergency supplies",
+      "back": "Back",
+
+      // Chatbot demo content
+  "chatbot_welcome": "Hello! I'm the Resilient360 AI Assistant. How can I help you today?",
+      "chatbot_demo_question": "What should I do during a flood?",
+      "chatbot_demo_response": "During a flood, move to higher ground, turn off electricity and gas, avoid walking through flowing water, and keep important documents safe. Help is on the way!",
+
+      // App specific terms
+  "app_name": "Resilient360",
+      "app_subtitle": "Indonesia Early Warning System",
+      "protect_your_family": "Protect Your Family",
+      "login_continue": "Sign in to continue",
+      "protecting_communities": "Protecting communities with drone technology",
+
+      // Home page
+      "emergency_alert": "Emergency Alert",
+      "affected_people": "Affected People",
+      "active_drones": "Active Drones",
+      "active_disasters": "Active Disasters",
+      "aid_delivered": "Aid Delivered",
+      "recent_disasters": "Recent Disasters",
+      "view_all": "View All",
+      "stories": "Field Stories",
+      "need_help": "Need Help?",
+      "emergency_team": "Team ready to help 24/7",
+      "contact_emergency": "Contact Emergency",
+
+      // Map page
+      "real_time_drone_map": "Real-Time Drone Map",
+      "monitoring_drones": "Monitor relief drones assisting people",
+      "all_active_disasters": "All Active Disasters",
+
+      // Help page
+      "help_center": "Help Center",
+      "emergency_contacts": "Emergency Contacts",
+      "call": "Call",
+      "safety_guidelines": "Safety Guidelines",
+      "during_flood": "During Flood",
+      "during_earthquake": "During Earthquake",
+      "during_landslide": "During Landslide",
+      "emergency_question": "Emergency?",
+      "request_help": "Request Help Now",
+
+      // Navigation
+      "home": "Home",
+      "map": "Map",
+      "help": "Help",
+
+      // Flood safety guidelines
+      "flood_move_higher": "Move to higher ground",
+      "flood_turn_off": "Turn off electricity and gas",
+      "flood_avoid_walking": "Avoid walking through flowing water",
+      "flood_save_documents": "Keep important documents safe",
+
+      // Earthquake safety guidelines
+      "earthquake_protect_head": "Protect your head, shelter under a table",
+      "earthquake_away_windows": "Stay away from windows and heavy objects",
+      "earthquake_no_elevator": "Do not use elevators",
+      "earthquake_open_area": "Move to an open area after shaking",
+
+      // Landslide safety guidelines
+      "landslide_leave_immediately": "Leave hazardous areas immediately",
+      "landslide_watch_cracks": "Watch for ground cracks",
+      "landslide_listen_unusual": "Listen for unusual rumbling",
+      "landslide_dont_return": "Do not return until it is safe",
+
+      // Emergency contacts
+      "national_disaster_agency": "National Disaster Management Agency",
+      "ambulance_medical": "Ambulance & Emergency Medical",
+      "fire_department": "Fire Department",
+      "police": "Police",
+      "national_search_rescue": "National Search & Rescue"
+      ,
+      // Disaster card and map labels
+      "people_affected_label": "People Affected",
+      "drones_deployed_label": "Drones Deployed",
+      "severity_critical": "Critical",
+      "severity_high": "High",
+      "severity_medium": "Moderate",
+      "status_active": "Active",
+      "status_monitoring": "Monitoring",
+      "status_resolved": "Resolved",
+      "legend_responding": "Responding",
+      "legend_active": "Active/Ready",
+      "legend_returning": "Returning",
+      "legend_disaster_location": "Disaster Location"
+    }
+  },
+  // Additional shared labels
+  en_addons: {
+    translation: {}
+  },
   id: {
     translation: {
       // Common terms
@@ -49,12 +184,12 @@ const resources = {
       "back": "Kembali",
       
       // Chatbot demo content
-      "chatbot_welcome": "Halo! Saya Asisten AI SiagaBencana. Bagaimana saya bisa membantu Anda hari ini?",
+  "chatbot_welcome": "Halo! Saya Asisten AI Resilient360. Bagaimana saya bisa membantu Anda hari ini?",
       "chatbot_demo_question": "Apa yang harus saya lakukan saat banjir?",
       "chatbot_demo_response": "Saat banjir, pindahkan diri Anda ke tempat yang lebih tinggi, matikan listrik dan gas, hindari berjalan di air yang mengalir, dan simpan dokumen penting Anda. Bantuan sedang dalam perjalanan!",
       
       // App specific terms
-      "app_name": "SiagaBencana",
+  "app_name": "Resilient360",
       "app_subtitle": "Sistem Peringatan Dini Indonesia",
       "protect_your_family": "Lindungi Keluarga Anda",
       "login_continue": "Masuk untuk melanjutkan",
@@ -97,7 +232,7 @@ const resources = {
       // Flood safety guidelines
       "flood_move_higher": "Pindah ke tempat yang lebih tinggi",
       "flood_turn_off": "Matikan listrik dan gas",
-      "flood_avoid_walking": "Hindari berjalan di air mengalir",
+      "flood_avoid_walking": "Hindari berjalan di air yang mengalir",
       "flood_save_documents": "Simpan dokumen penting",
       
       // Earthquake safety guidelines
@@ -118,6 +253,20 @@ const resources = {
       "fire_department": "Pemadam Kebakaran",
       "police": "Polisi",
       "national_search_rescue": "SAR Nasional"
+      ,
+      // Disaster card and map labels (Indonesian)
+      "people_affected_label": "Warga Terdampak",
+      "drones_deployed_label": "Drone Dikirim",
+      "severity_critical": "Kritis",
+      "severity_high": "Tinggi",
+      "severity_medium": "Sedang",
+      "status_active": "Aktif",
+      "status_monitoring": "Pemantauan",
+      "status_resolved": "Teratasi",
+      "legend_responding": "Merespons",
+      "legend_active": "Aktif/Siaga",
+      "legend_returning": "Kembali",
+      "legend_disaster_location": "Lokasi Bencana"
     }
   },
   jv: {
@@ -166,12 +315,12 @@ const resources = {
       "back": "Mbalik",
       
       // Chatbot demo content
-      "chatbot_welcome": "Halo! Kula Asisten AI SiagaBencana. Kepriye kula bisa mbantu panjenengan?",
+  "chatbot_welcome": "Halo! Kula Asisten AI Resilient360. Kepriye kula bisa mbantu panjenengan?",
       "chatbot_demo_question": "Apa sing kudu kula lakoni nalika banjir?",
       "chatbot_demo_response": "Nalika banjir, pindah menyang panggon sing luwih dhuwur, mateni listrik lan gas, nglindhungi mlaku ing banyu sing mlaku, lan simpen dokumen penting. Bantuan lagi dalam perjalanan!",
       
       // App specific terms
-      "app_name": "SiagaBencana",
+  "app_name": "Resilient360",
       "app_subtitle": "Sistem Peringatan Dini Indonesia",
       "protect_your_family": "Lindungi Kulawarga Sampeyan",
       "login_continue": "Login kanggo nerusake",
@@ -283,12 +432,12 @@ const resources = {
       "back": "Balik",
       
       // Chatbot demo content
-      "chatbot_welcome": "Halo! Kuring Asisten AI SiagaBencana. Kumaha kuring bisa nulung anjeun ayeuna?",
+  "chatbot_welcome": "Halo! Kuring Asisten AI Resilient360. Kumaha kuring bisa nulung anjeun ayeuna?",
       "chatbot_demo_question": "Naon nu kudu kuring lakukeun nalika aya banjir?",
       "chatbot_demo_response": "Nalika banjir, pindah ka tempat nu leuwih luhur, matikeun listrik jeung gas, hindari leumpang di cai nu ngalir, sarta simpen dokumen penting. Bantuan keur diperjalanan!",
       
       // App specific terms
-      "app_name": "SiagaBencana",
+  "app_name": "Resilient360",
       "app_subtitle": "Sistem Peringatan Dini Indonesia",
       "protect_your_family": "Lindungi Kulawarga Anjeun",
       "login_continue": "Asup pikeun neruskeun",
@@ -400,12 +549,12 @@ const resources = {
       "back": "Mbalik",
       
       // Chatbot demo content
-      "chatbot_welcome": "Halo! Tiang Asisten AI SiagaBencana. Kepriye tiang bisa nulung ida?",
+  "chatbot_welcome": "Halo! Tiang Asisten AI Resilient360. Kepriye tiang bisa nulung ida?",
       "chatbot_demo_question": "Naon sing kudu tiang lakukeun nalika banjir?",
       "chatbot_demo_response": "Nalika banjir, pindah nuju panggon sing luwih dhuwur, mateni listrik lan gas, nglindhungi mlaku ing banyu sing mlaku, lan simpen dokumen penting. Bantuan lagi dalam perjalanan!",
       
       // App specific terms
-      "app_name": "SiagaBencana",
+  "app_name": "Resilient360",
       "app_subtitle": "Sistem Peringatan Dini Indonesia",
       "protect_your_family": "Lindungi Kulawarga Ida",
       "login_continue": "Manjing antuk nerusang",
@@ -477,8 +626,8 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: "id", // default language
-    fallbackLng: "id",
+    lng: "en", // default language set to English
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false
     }

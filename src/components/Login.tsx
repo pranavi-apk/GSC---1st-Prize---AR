@@ -135,7 +135,7 @@ export function Login({ onLogin }: LoginProps) {
             {t("protecting_communities")}
           </p>
           <p className="text-xs text-white/70 mt-1">
-            © 2025 Indonesian Disaster AIDSS
+            © 25 Indonesian Disaster AIDSS
           </p>
         </div>
       </div>
