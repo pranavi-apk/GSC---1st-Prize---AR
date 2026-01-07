@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { DroneMap } from './components/DroneMap';
 import { ImageRequest } from './components/ImageRequest';
@@ -7,6 +7,7 @@ import { HelpCenter } from './components/HelpCenter';
 import { AdminDashboard } from './components/AdminDashboard';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
+import FloodPopup from './components/FloodPopup';
 import { Home, Map, Camera, Bot, HelpCircle, Shield } from 'lucide-react';
 
 type Tab = 'dashboard' | 'map' | 'request' | 'ai' | 'help' | 'admin';
@@ -17,6 +18,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [authView, setAuthView] = useState<AuthView>('login');
+  const [showFloodPopup, setShowFloodPopup] = useState(false);
 
   const handleLogin = (role: UserRole) => {
     setUserRole(role);
@@ -25,6 +27,9 @@ export default function App() {
     } else if (role === 'admin') {
       setActiveTab('admin');
     }
+    
+    // Show flood popup after login
+    setShowFloodPopup(true);
   };
 
   const handleSignup = (role: UserRole) => {
@@ -34,6 +39,9 @@ export default function App() {
     } else if (role === 'admin') {
       setActiveTab('admin');
     }
+    
+    // Show flood popup after signup
+    setShowFloodPopup(true);
   };
 
   // Show auth screens if user is not logged in
@@ -128,6 +136,12 @@ export default function App() {
           )}
         </div>
       </nav>
+      
+      {/* Flood Popup */}
+      <FloodPopup 
+        isOpen={showFloodPopup}
+        onClose={() => setShowFloodPopup(false)}
+      />
     </div>
   );
 }

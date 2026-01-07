@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import { Send, Bot } from 'lucide-react';
+import { Send, Bot, Loader2 } from 'lucide-react';
+import { llmService } from '../services/llmService';
 
 type Message = {
   id: string;
@@ -15,16 +16,7 @@ const QUICK_PROMPTS = [
   'How to purify water?',
 ];
 
-const AI_RESPONSES: Record<string, string> = {
-  'What should I do during a flood?':
-    'During a flood: 1) Move to higher ground immediately 2) Avoid walking through moving water 3) Stay away from power lines 4) Listen to emergency broadcasts 5) Do not return home until authorities say it is safe. If trapped, move to the highest level and signal for help.',
-  'Nearest evacuation route':
-    'Based on your location in North Jakarta, the nearest evacuation center is Jakarta Community Center, 2.3 km northwest. Route: Take Jl. Gatot Subroto north, turn left on Jl. Thamrin. Follow emergency signage. Estimated time: 15 minutes on foot.',
-  'First aid for injuries':
-    'For common injuries: 1) Stop bleeding by applying direct pressure 2) Clean wounds with clean water 3) Cover with sterile bandage 4) For severe bleeding, broken bones, or chest pain, seek immediate medical help. Contact emergency services or request medical drone assistance through the app.',
-  'How to purify water?':
-    'Emergency water purification: 1) Filter through cloth to remove debris 2) Boil for at least 1 minute 3) Let it cool before drinking. If unable to boil: Add 2 drops of household bleach per liter, wait 30 minutes. Request water supplies through the Aid Request feature if needed.',
-};
+
 
 export function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
@@ -37,10 +29,11 @@ export function AIAssistant() {
     },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const sendMessage = (text: string) => {
-    if (!text.trim()) return;
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -51,22 +44,40 @@ export function AIAssistant() {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const response =
-        AI_RESPONSES[text] ||
-        'I understand your concern. For immediate emergency assistance, please use the Contact Emergency button on the Dashboard. Our team is available 24/7 to help you. You can also submit an Image Request for aid delivery.';
+    try {
+      // Prepare messages for the LLM service
+      // We map our local Message type to the service's Message type
+      const history = messages.map(m => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content
+      }));
+      // Add the current new message
+      history.push({ role: 'user', content: text });
+
+      const responseText = await llmService.generateResponse(history);
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: response,
+        content: responseText,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, aiMessage]);
-    }, 1000);
+    } catch (error) {
+      console.error('Failed to get response:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: "I'm sorry, I'm having trouble connecting to my brain right now. Please try again later.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -123,7 +134,7 @@ export function AIAssistant() {
       </div>
 
       {/* Quick Prompts and Input - Fixed at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-red-200/50 p-4 pb-24 shadow-lg">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/80 backdrop-blur-xl border-t border-red-200/50 p-4 pb-24 shadow-lg">
         <div className="flex flex-wrap gap-2 mb-4">
           {QUICK_PROMPTS.map((prompt) => (
             <button
@@ -149,7 +160,7 @@ export function AIAssistant() {
             type="submit"
             className="bg-gradient-to-br from-red-600 to-red-700 text-white p-3 rounded-2xl hover:from-red-700 hover:to-red-800 transition-all shadow-lg"
           >
-            <Send size={20} />
+            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
           </button>
         </form>
       </div>

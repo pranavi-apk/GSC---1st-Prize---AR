@@ -1,11 +1,27 @@
-import { Bell, AlertTriangle, Users, Plane, AlertCircle, Package, MapPin, X } from 'lucide-react';
+import { Bell, AlertTriangle, Users, Plane, AlertCircle, Package, MapPin, X, Radio } from 'lucide-react';
 import { useState } from 'react';
+import { EmergencyModal, SMSBanner } from './EmergencyAlert';
 
 export function Dashboard() {
   const [showAlert, setShowAlert] = useState(true);
+  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
+  const [showSMS, setShowSMS] = useState(false);
+
+  const handleSimulateAlert = () => {
+    setShowSMS(true);
+    // Delay the modal slightly for dramatic effect
+    setTimeout(() => setShowEmergencyModal(true), 1500);
+  };
 
   return (
-    <div className="min-h-full bg-gradient-to-br from-red-50 to-rose-100">
+    <div className="min-h-full bg-gradient-to-br from-red-50 to-rose-100 relative">
+      <EmergencyModal open={showEmergencyModal} onOpenChange={setShowEmergencyModal} type="tsunami" />
+      <SMSBanner 
+        show={showSMS} 
+        onDismiss={() => setShowSMS(false)} 
+        message="EMERGENCY ALERT: Tsunami detected in your area. EVACUATE NOW to higher ground. This is not a drill." 
+      />
+
       {/* Top App Bar */}
       <header className="bg-white/80 backdrop-blur-xl border-b border-red-200/50 px-4 py-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between">
@@ -13,13 +29,22 @@ export function Dashboard() {
             <h1 className="text-gray-900">Resilient360</h1>
             <p className="text-sm text-gray-600">Protect Your Family</p>
           </div>
-          <div className="relative">
-            <div className="w-12 h-12 rounded-2xl bg-red-100/80 backdrop-blur-xl flex items-center justify-center border border-red-200/50">
-              <Bell size={24} className="text-red-600" />
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={handleSimulateAlert}
+              className="bg-red-100 text-red-700 p-2 rounded-xl hover:bg-red-200 transition-colors"
+              title="Simulate Emergency Alert"
+            >
+              <Radio size={20} />
+            </button>
+            <div className="relative">
+              <div className="w-12 h-12 rounded-2xl bg-red-100/80 backdrop-blur-xl flex items-center justify-center border border-red-200/50">
+                <Bell size={24} className="text-red-600" />
+              </div>
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
+                3
+              </span>
             </div>
-            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
-              3
-            </span>
           </div>
         </div>
       </header>

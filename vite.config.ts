@@ -56,5 +56,12 @@
     server: {
       port: 3000,
       open: true,
+      proxy: {
+        '/api/ai': {
+          target: 'https://api.ark-labs.cloud/api/v1',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/ai/, ''),
+        },
+      },
     },
   });
