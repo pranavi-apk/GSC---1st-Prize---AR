@@ -1,26 +1,30 @@
 import { useState } from 'react';
-import { Shield, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Shield, User, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 
 type UserRole = 'user' | 'admin';
 
-export function Login({
-  onLogin,
-  onSwitchToSignup,
+export function Signup({
+  onSignup,
+  onSwitchToLogin,
 }: {
-  onLogin: (role: UserRole) => void;
-  onSwitchToSignup: () => void;
+  onSignup: (role: UserRole) => void;
+  onSwitchToLogin: () => void;
 }) {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedRole, setSelectedRole] = useState<UserRole>('user');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (!email || !password) {
+    if (!fullName || !email || !password || !confirmPassword) {
       setError('Please fill in all fields');
       return;
     }
@@ -30,8 +34,23 @@ export function Login({
       return;
     }
 
-    // Simulate login
-    onLogin(selectedRole);
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (!agreedToTerms) {
+      setError('Please agree to the terms and conditions');
+      return;
+    }
+
+    // Simulate signup
+    onSignup(selectedRole);
   };
 
   return (
@@ -52,10 +71,10 @@ export function Login({
           <p className="text-red-100">Disaster Response Platform</p>
         </div>
 
-        {/* Login Card */}
+        {/* Signup Card */}
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-6 shadow-2xl border border-white/20">
-          <h2 className="text-white text-2xl mb-2">Welcome Back</h2>
-          <p className="text-red-100 mb-6">Sign in to continue</p>
+          <h2 className="text-white text-2xl mb-2">Create Account</h2>
+          <p className="text-red-100 mb-6">Join our emergency response network</p>
 
           {/* Error Message */}
           {error && (
@@ -67,7 +86,7 @@ export function Login({
 
           {/* Role Selection */}
           <div className="mb-6">
-            <label className="text-sm text-red-100 mb-3 block">Login as</label>
+            <label className="text-sm text-red-100 mb-3 block">Sign up as</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
@@ -94,9 +113,29 @@ export function Login({
                 <span>Admin</span>
               </button>
             </div>
+            {selectedRole === 'admin' && (
+              <div className="mt-2 bg-orange-900/30 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-2 flex items-start gap-2">
+                <AlertCircle size={16} className="text-orange-200 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-orange-100">
+                  Admin accounts require verification by authorities
+                </p>
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
+            <div>
+              <label className="text-sm text-red-100 mb-2 block">Full Name</label>
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Enter your full name"
+                className="w-full px-4 py-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder:text-red-200/50 outline-none focus:ring-2 focus:ring-white/50 focus:border-white/30"
+              />
+            </div>
+
             {/* Email */}
             <div>
               <label className="text-sm text-red-100 mb-2 block">Email Address</label>
@@ -117,7 +156,7 @@ export function Login({
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="Create a password"
                   className="w-full px-4 py-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder:text-red-200/50 outline-none focus:ring-2 focus:ring-white/50 focus:border-white/30 pr-12"
                 />
                 <button
@@ -128,47 +167,82 @@ export function Login({
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+              <p className="text-xs text-red-200 mt-1">Must be at least 6 characters</p>
             </div>
 
-            {/* Forgot Password */}
-            <div className="text-right">
-              <button
-                type="button"
-                className="text-sm text-white hover:text-red-100"
-              >
-                Forgot Password?
-              </button>
+            {/* Confirm Password */}
+            <div>
+              <label className="text-sm text-red-100 mb-2 block">Confirm Password</label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm your password"
+                  className="w-full px-4 py-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder:text-red-200/50 outline-none focus:ring-2 focus:ring-white/50 focus:border-white/30 pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-red-200 hover:text-white"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Terms Agreement */}
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 text-red-600 rounded focus:ring-2 focus:ring-white/50"
+              />
+              <label htmlFor="terms" className="text-sm text-red-100">
+                I agree to the{' '}
+                <button type="button" className="text-white hover:text-red-100">
+                  Terms of Service
+                </button>{' '}
+                and{' '}
+                <button type="button" className="text-white hover:text-red-100">
+                  Privacy Policy
+                </button>
+              </label>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-white text-red-600 px-6 py-4 rounded-2xl hover:bg-red-50 transition-all shadow-lg"
+              className="w-full bg-white text-red-600 px-6 py-4 rounded-2xl hover:bg-red-50 transition-all shadow-lg flex items-center justify-center gap-2"
             >
-              Sign In
+              <CheckCircle size={20} />
+              Create Account
             </button>
           </form>
 
-          {/* Sign Up Link */}
+          {/* Login Link */}
           <div className="text-center mt-6">
             <p className="text-red-100">
-              Don't have an account?{' '}
+              Already have an account?{' '}
               <button
-                onClick={onSwitchToSignup}
+                onClick={onSwitchToLogin}
                 className="text-white hover:text-red-100"
               >
-                Sign Up
+                Sign In
               </button>
             </p>
           </div>
         </div>
 
-        {/* Demo Credentials */}
+        {/* Info Note */}
         <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-4 mt-4 text-white text-sm border border-white/20">
-          <div className="mb-2">Demo Credentials:</div>
-          <div className="space-y-1 text-red-100">
-            <div>User: user@demo.com / password123</div>
-            <div>Admin: admin@demo.com / admin123</div>
+          <div className="flex items-start gap-2">
+            <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+            <p className="text-red-100">
+              Your safety is our priority. All accounts are verified to ensure secure emergency response.
+            </p>
           </div>
         </div>
       </div>

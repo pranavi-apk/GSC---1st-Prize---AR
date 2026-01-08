@@ -1,7 +1,7 @@
 
-  # Disaster Alert App Mockup
+  # Disaster Response App Design
 
-  This is a code bundle for Disaster Alert App Mockup. The original project is available at https://www.figma.com/design/bWRemN66o9mFlH4DGX6wq1/Disaster-Alert-App-Mockup.
+  This is a code bundle for Disaster Response App Design. The original project is available at https://www.figma.com/design/xSy2i9QjruopHOcDad5EAj/Disaster-Response-App-Design.
 
   ## Running the code
 

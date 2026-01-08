@@ -17,7 +17,6 @@
         'next-themes@0.4.6': 'next-themes',
         'lucide-react@0.487.0': 'lucide-react',
         'input-otp@1.4.2': 'input-otp',
-        'figma:asset/a5e3c024fd08c6b540e10c647f6b4375b2eb41a1.png': path.resolve(__dirname, './src/assets/a5e3c024fd08c6b540e10c647f6b4375b2eb41a1.png'),
         'embla-carousel-react@8.6.0': 'embla-carousel-react',
         'cmdk@1.1.1': 'cmdk',
         'class-variance-authority@0.7.1': 'class-variance-authority',
@@ -57,5 +56,12 @@
     server: {
       port: 3000,
       open: true,
+      proxy: {
+        '/api/ai': {
+          target: 'https://api.ark-labs.cloud/api/v1',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/ai/, ''),
+        },
+      },
     },
   });
