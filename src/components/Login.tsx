@@ -16,6 +16,17 @@ export function Login({
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
+  const openFullscreen = () => {
+    const elem = document.documentElement as any;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -29,6 +40,9 @@ export function Login({
       setError('Please enter a valid email address');
       return;
     }
+
+    // Trigger full screen on login
+    openFullscreen();
 
     // Simulate login
     onLogin(selectedRole);
