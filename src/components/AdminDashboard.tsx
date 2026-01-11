@@ -46,6 +46,31 @@ const MOCK_REQUESTS: ImageRequest[] = [
 export function AdminDashboard() {
   const [view, setView] = useState<AdminView>('overview');
   const [requests, setRequests] = useState<ImageRequest[]>(MOCK_REQUESTS);
+  const [activityPage, setActivityPage] = useState(0);
+
+  const activityPageSize = 6;
+  const recentActivities = [
+    { action: 'Drone DR-043 deployed', location: 'North Jakarta', time: '5 min ago' },
+    { action: 'Image request approved', location: 'Bekasi', time: '12 min ago' },
+    { action: 'New disaster reported', location: 'Bogor', time: '28 min ago' },
+    { action: 'Drone DR-022 deployed', location: 'South Jakarta', time: '35 min ago' },
+    { action: 'Aid delivery completed', location: 'Tangerang', time: '42 min ago' },
+    { action: 'Evacuation request approved', location: 'Depok', time: '1 hr ago' },
+    { action: 'Drone DR-015 returned', location: 'West Jakarta', time: '1 hr ago' },
+    { action: 'Emergency alert sent', location: 'Central Jakarta', time: '2 hr ago' },
+    { action: 'Medical team dispatched', location: 'Bekasi', time: '2 hr ago' },
+    { action: 'Supply drop completed', location: 'Bogor', time: '3 hr ago' },
+    { action: 'Shelter opened', location: 'Tangerang', time: '3 hr ago' },
+    { action: 'Drone DR-031 deployed', location: 'North Jakarta', time: '4 hr ago' },
+    { action: 'Road clearance completed', location: 'South Jakarta', time: '4 hr ago' },
+    { action: 'Water supply delivered', location: 'Depok', time: '5 hr ago' },
+  ];
+
+  const totalActivityPages = Math.ceil(recentActivities.length / activityPageSize) || 1;
+  const pagedActivities = recentActivities.slice(
+    activityPage * activityPageSize,
+    (activityPage + 1) * activityPageSize
+  );
 
   const handleApprove = (id: string) => {
     setRequests((prev) =>
@@ -94,11 +119,11 @@ export function AdminDashboard() {
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 md:mx-auto md:max-w-5xl md:py-6">
         {/* Overview */}
         {view === 'overview' && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <StatCard
                 icon={<Users size={24} />}
                 label="Affected People"
@@ -132,22 +157,46 @@ export function AdminDashboard() {
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-4 border border-red-200/50 shadow-lg">
               <h3 className="text-gray-900 mb-3">Recent Activity</h3>
               <div className="space-y-3">
-                <ActivityItem
-                  action="Drone DR-043 deployed"
-                  location="North Jakarta"
-                  time="5 min ago"
-                />
-                <ActivityItem
-                  action="Image request approved"
-                  location="Bekasi"
-                  time="12 min ago"
-                />
-                <ActivityItem
-                  action="New disaster reported"
-                  location="Bogor"
-                  time="28 min ago"
-                />
+                {pagedActivities.map((activity, idx) => (
+                  <ActivityItem
+                    key={`${activity.action}-${idx}`}
+                    action={activity.action}
+                    location={activity.location}
+                    time={activity.time}
+                  />
+                ))}
               </div>
+              {totalActivityPages > 1 && (
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-red-100">
+                  <button
+                    type="button"
+                    onClick={() => setActivityPage((p) => Math.max(0, p - 1))}
+                    disabled={activityPage === 0}
+                    className={`text-sm px-3 py-1 rounded-full border transition-colors ${
+                      activityPage === 0
+                        ? 'text-gray-400 border-gray-200 cursor-not-allowed'
+                        : 'text-red-600 border-red-200 hover:bg-red-50'
+                    }`}
+                  >
+                    Prev
+                  </button>
+                  <span className="text-xs text-gray-600">
+                    Page {activityPage + 1} of {totalActivityPages}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setActivityPage((p) => Math.min(totalActivityPages - 1, p + 1))}
+                    disabled={activityPage >= totalActivityPages - 1}
+                    className={`text-sm px-3 py-1 rounded-full border transition-colors ${
+                      activityPage >= totalActivityPages - 1
+                        ? 'text-gray-400 border-gray-200 cursor-not-allowed'
+                        : 'text-red-600 border-red-200 hover:bg-red-50'
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}

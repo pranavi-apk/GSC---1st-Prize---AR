@@ -4,9 +4,8 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "../components/ui/alert-dialog";
 import { AlertTriangle, Bell, MessageSquare, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -56,19 +55,28 @@ export function EmergencyModal({ open, onOpenChange, type = 'flood' }: Emergency
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="bg-white/90 backdrop-blur-2xl border-2 border-red-500 shadow-[0_0_50px_rgba(220,38,38,0.5)] max-w-sm rounded-[2rem] p-0 overflow-hidden">
+      <AlertDialogContent className="bg-white/90 backdrop-blur-2xl border-2 border-red-500 shadow-[0_0_50px_rgba(220,38,38,0.5)] max-w-[calc(100%-2rem)] sm:max-w-md mx-4 rounded-[2rem] p-0 overflow-hidden max-h-[90vh] flex flex-col">
+         {/* Close Button */}
+        <button
+          onClick={() => onOpenChange(false)}
+          className="absolute top-4 right-4 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
+          aria-label="Close alert"
+        >
+          <X size={20} />
+        </button>
+
          {/* Urgent Header */}
         <div className={`${details.color} p-6 flex flex-col items-center text-center animate-pulse`}>
           <div className="bg-white/20 p-3 rounded-full mb-3 backdrop-blur-sm">
              <AlertTriangle size={48} className="text-white" />
           </div>
-          <AlertDialogTitle className="text-white text-2xl font-black uppercase tracking-widest text-shadow-sm">
+          <AlertDialogTitle className="text-white text-xl sm:text-2xl font-black uppercase tracking-widest text-shadow-sm">
             {details.title}
           </AlertDialogTitle>
         </div>
 
-        <div className="p-6">
-          <AlertDialogDescription className="text-gray-900 text-lg font-medium text-center leading-relaxed">
+        <div className="p-6 overflow-y-auto flex-1">
+          <AlertDialogDescription className="text-gray-900 text-base sm:text-lg font-medium text-center leading-relaxed">
             {details.description}
           </AlertDialogDescription>
 
@@ -83,7 +91,7 @@ export function EmergencyModal({ open, onOpenChange, type = 'flood' }: Emergency
         <AlertDialogFooter className="p-6 pt-0 sm:justify-center">
           <AlertDialogAction 
             onClick={() => onOpenChange(false)}
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-6 text-lg rounded-xl shadow-lg transition-transform active:scale-95 uppercase tracking-wide"
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-5 sm:py-6 text-base sm:text-lg rounded-xl shadow-lg transition-transform active:scale-95 uppercase tracking-wide"
           >
             {details.action}
           </AlertDialogAction>
@@ -100,15 +108,14 @@ export function SMSBanner({ show, onDismiss, message, sender = "Resilient360" }:
   useEffect(() => {
     setVisible(show);
     if (show) {
-      // Auto dismiss after 10 seconds if not interacted with? 
-      // User requested "show an sms notification", usually these persist until dismissed or timeout. 
-      // Let's keep it until dismissed for visibility during demo.
+      // Auto dismiss after 5 seconds
       const timer = setTimeout(() => {
-         // Optional auto-dismiss could go here
-      }, 10000);
+        setVisible(false);
+        onDismiss();
+      }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [show]);
+  }, [show, onDismiss]);
 
   if (!visible) return null;
 

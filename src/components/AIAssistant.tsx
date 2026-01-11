@@ -31,6 +31,7 @@ export function AIAssistant() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showQuickPrompts, setShowQuickPrompts] = useState(true);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -45,6 +46,7 @@ export function AIAssistant() {
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
+    setShowQuickPrompts(false);
 
     try {
       // Prepare messages for the LLM service
@@ -86,7 +88,7 @@ export function AIAssistant() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-red-50 to-rose-100">
+    <div className="flex flex-col h-full min-h-0 overflow-hidden bg-gradient-to-br from-red-50 to-rose-100">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-xl border-b border-red-200/50 px-4 py-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center gap-3">
@@ -134,9 +136,10 @@ export function AIAssistant() {
       </div>
 
       {/* Quick Prompts and Input - Fixed at bottom */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/80 backdrop-blur-xl border-t border-red-200/50 p-4 pb-24 shadow-lg">
-        <div className="flex flex-wrap gap-2 mb-4">
-          {QUICK_PROMPTS.map((prompt) => (
+      <div className="fixed bottom-0 left-0 right-0 md:left-64 md:right-0 w-full md:w-auto bg-white/80 backdrop-blur-xl border-t border-red-200/50 p-4 pb-24 md:pb-4 shadow-lg md:flex md:justify-center md:border-t-0 md:border-l md:fixed md:top-0 md:bottom-0 md:h-screen">
+        <div className="max-w-3xl mx-auto md:w-[calc(100%-256px)]">
+          <div className="flex flex-wrap gap-2 mb-4">
+          {showQuickPrompts && QUICK_PROMPTS.map((prompt) => (
             <button
               key={prompt}
               onClick={() => setInput(prompt)}
@@ -163,6 +166,7 @@ export function AIAssistant() {
             {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

@@ -2220,3 +2220,28 @@ html {
     opacity: .5;
   }
 }
+
+/* Custom scrollbar to match the red theme */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f43f5e #ffe4e6;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffe4e6;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f43f5e 0%, #f97316 100%);
+  border-radius: 9999px;
+  border: 2px solid #ffe4e6;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #e11d48 0%, #ea580c 100%);
+}

@@ -212,7 +212,7 @@ export function ImageRequest() {
             </button>
             {/* Image Preview */}
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-red-200/50 shadow-lg">
-              <div className="h-48 bg-gradient-to-br from-red-100 to-rose-200 flex items-center justify-center text-gray-400">
+              <div className="h-96 bg-gradient-to-br from-red-100 to-rose-200 flex items-center justify-center text-gray-400">
                 {image && image !== 'captured' ? (
                   <img src={image} alt="Uploaded" className="w-full h-full object-cover" />
                 ) : (
