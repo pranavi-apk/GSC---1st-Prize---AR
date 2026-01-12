@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { DroneMap } from './components/DroneMap';
 import { ImageRequest } from './components/ImageRequest';
@@ -6,18 +6,16 @@ import { AIAssistant } from './components/AIAssistant';
 import { HelpCenter } from './components/HelpCenter';
 import { AdminDashboard } from './components/AdminDashboard';
 import { Login } from './components/Login';
-import { Signup } from './components/Signup';
 import FloodPopup from './components/FloodPopup';
 import { Home, Map, Camera, Bot, HelpCircle, Shield } from 'lucide-react';
+import { Toaster } from 'sonner';
 
 type Tab = 'dashboard' | 'map' | 'request' | 'ai' | 'help' | 'admin';
 type UserRole = 'user' | 'admin' | null;
-type AuthView = 'login' | 'signup';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [userRole, setUserRole] = useState<UserRole>(null);
-  const [authView, setAuthView] = useState<AuthView>('login');
   const [showFloodPopup, setShowFloodPopup] = useState(false);
 
   const handleLogin = (role: UserRole) => {
@@ -31,34 +29,13 @@ export default function App() {
     }
   };
 
-  const handleSignup = (role: UserRole) => {
-    setUserRole(role);
-    if (role === 'user') {
-      setActiveTab('dashboard');
-      // Show flood popup after signup for users only
-      setShowFloodPopup(true);
-    } else if (role === 'admin') {
-      setActiveTab('admin');
-    }
-  };
-
   // Show auth screens if user is not logged in
   if (!userRole) {
-    if (authView === 'login') {
-      return (
-        <Login
-          onLogin={handleLogin}
-          onSwitchToSignup={() => setAuthView('signup')}
-        />
-      );
-    } else {
-      return (
-        <Signup
-          onSignup={handleSignup}
-          onSwitchToLogin={() => setAuthView('login')}
-        />
-      );
-    }
+    return (
+      <Login
+        onLogin={handleLogin}
+      />
+    );
   }
 
   return (
@@ -66,12 +43,12 @@ export default function App() {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto pb-20 md:pb-0 md:ml-64 md:flex md:justify-center">
         <div className="w-full max-w-5xl">
-        {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'dashboard' && <Dashboard onLogout={() => setUserRole(null)} />}
         {activeTab === 'map' && <DroneMap />}
         {activeTab === 'request' && <ImageRequest />}
         {activeTab === 'ai' && <AIAssistant />}
         {activeTab === 'help' && <HelpCenter />}
-        {activeTab === 'admin' && <AdminDashboard />}
+        {activeTab === 'admin' && <AdminDashboard onLogout={() => setUserRole(null)} />}
         </div>
       </div>
 
@@ -137,10 +114,18 @@ export default function App() {
         </div>
       </nav>
       
-      {/* Flood Popup */}
       <FloodPopup 
         isOpen={showFloodPopup}
         onClose={() => setShowFloodPopup(false)}
+      />
+      <Toaster 
+        position="top-center" 
+        expand={true} 
+        richColors 
+        toastOptions={{
+          style: { zIndex: 99999 },
+          className: 'z-[99999]'
+        }}
       />
     </div>
   );

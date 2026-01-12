@@ -1,8 +1,8 @@
-import { Bell, AlertTriangle, Users, Plane, AlertCircle, Package, MapPin, X } from 'lucide-react';
+import { Bell, AlertTriangle, Users, Plane, AlertCircle, Package, MapPin, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { EmergencyModal, SMSBanner } from './EmergencyAlert';
 
-export function Dashboard() {
+export function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [showAlert, setShowAlert] = useState(true);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
   const [showSMS, setShowSMS] = useState(false);
@@ -78,6 +78,14 @@ export function Dashboard() {
             <p className="text-sm text-gray-600">Protect Your Family</p>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onLogout}
+              className="w-12 h-12 rounded-2xl bg-red-100/80 backdrop-blur-xl flex items-center justify-center border border-red-200/50 hover:bg-red-200/60 transition-colors shadow-sm"
+              aria-label="Logout"
+            >
+              <LogOut size={24} className="text-red-600 ml-1" />
+            </button>
             <div className="relative">
               <button
                 type="button"
@@ -262,11 +270,13 @@ export function Dashboard() {
               title="SAR Team Evacuates 45 Families"
               location="North Jakarta"
               time="1 hour ago"
+              imageUrl="/images/sar_evacuation.png"
             />
             <StoryCard
               title="Medical Supplies Delivered to Remote Village"
               location="Bogor"
               time="3 hours ago"
+              imageUrl="/images/medical_delivery.png"
             />
           </div>
           <button className="w-full mt-3 bg-white/80 backdrop-blur-xl border border-red-200/50 text-red-600 px-6 py-3 rounded-2xl hover:bg-red-50 transition-all shadow-sm font-semibold">
@@ -377,24 +387,31 @@ function StoryCard({
   title,
   location,
   time,
+  imageUrl,
 }: {
   title: string;
   location: string;
   time: string;
+  imageUrl: string;
 }) {
   return (
-    <div className="bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-lg border border-red-200/50">
-      <div className="bg-gradient-to-br from-red-100 to-rose-200 h-40 flex items-center justify-center text-gray-400">
-        Field Image
+    <div className="bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-lg border border-red-200/50 group cursor-pointer hover:shadow-xl transition-all">
+      <div className="h-40 relative overflow-hidden">
+        <img 
+          src={imageUrl} 
+          alt={title}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
       <div className="p-4">
-        <h3 className="text-gray-900 mb-2">{title}</h3>
+        <h3 className="text-gray-900 mb-2 font-medium group-hover:text-red-600 transition-colors">{title}</h3>
         <div className="flex items-center justify-between text-sm text-gray-600">
           <div className="flex items-center gap-2">
-            <MapPin size={14} />
+            <MapPin size={14} className="text-red-500" />
             {location}
           </div>
-          <span>{time}</span>
+          <span className="text-xs">{time}</span>
         </div>
       </div>
     </div>

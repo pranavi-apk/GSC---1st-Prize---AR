@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Plane, AlertCircle, Package, Check, X, Battery, MapPin } from 'lucide-react';
+import { Users, Plane, AlertCircle, Package, Check, X, Battery, MapPin, LogOut } from 'lucide-react';
 
 type AdminView = 'overview' | 'requests' | 'drones' | 'disasters';
 
@@ -8,6 +8,7 @@ type ImageRequest = {
   user: string;
   location: string;
   description: string;
+  imageUrl: string;
   aidNeeded: string[];
   timestamp: Date;
   status: 'pending' | 'approved' | 'rejected';
@@ -19,6 +20,7 @@ const MOCK_REQUESTS: ImageRequest[] = [
     user: 'Ahmad R.',
     location: 'North Jakarta, Jl. Gatot Subroto 45',
     description: 'Severe flooding, water level rising. Family trapped on second floor.',
+    imageUrl: '/images/request_flood.png',
     aidNeeded: ['Evacuation', 'Food', 'Water'],
     timestamp: new Date(Date.now() - 30 * 60 * 1000),
     status: 'pending',
@@ -28,6 +30,7 @@ const MOCK_REQUESTS: ImageRequest[] = [
     user: 'Siti M.',
     location: 'Bekasi, Jl. Ahmad Yani 12',
     description: 'Earthquake damage, injured person needs medical attention.',
+    imageUrl: '/images/request_earthquake.png',
     aidNeeded: ['Medical Assistance', 'Medicine'],
     timestamp: new Date(Date.now() - 45 * 60 * 1000),
     status: 'pending',
@@ -37,13 +40,14 @@ const MOCK_REQUESTS: ImageRequest[] = [
     user: 'Budi S.',
     location: 'Bogor, Jl. Raya Pajajaran 88',
     description: 'Landslide blocked road access. No food or clean water available.',
+    imageUrl: '/images/request_landslide.png',
     aidNeeded: ['Food', 'Water', 'Evacuation'],
     timestamp: new Date(Date.now() - 60 * 60 * 1000),
     status: 'pending',
   },
 ];
 
-export function AdminDashboard() {
+export function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [view, setView] = useState<AdminView>('overview');
   const [requests, setRequests] = useState<ImageRequest[]>(MOCK_REQUESTS);
   const [activityPage, setActivityPage] = useState(0);
@@ -87,9 +91,19 @@ export function AdminDashboard() {
   return (
     <div className="min-h-full bg-gradient-to-br from-red-50 to-rose-100">
       {/* Header */}
-      <header className="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-4 sticky top-0 z-10 shadow-2xl">
-        <h1 className="text-white">Admin Dashboard</h1>
-        <p className="text-sm text-red-100">Operational Control Center</p>
+      <header className="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-4 sticky top-0 z-10 shadow-2xl flex items-center justify-between">
+        <div>
+          <h1 className="text-white">Admin Dashboard</h1>
+          <p className="text-sm text-red-100">Operational Control Center</p>
+        </div>
+        <button
+          type="button"
+          onClick={onLogout}
+          className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center border border-white/30 hover:bg-white/30 transition-colors shadow-sm"
+          aria-label="Logout"
+        >
+          <LogOut size={24} className="text-white ml-1" />
+        </button>
       </header>
 
       {/* Tab Navigation */}
@@ -214,8 +228,12 @@ export function AdminDashboard() {
             {requests.map((request) => (
               <div key={request.id} className="bg-white/80 backdrop-blur-xl rounded-3xl p-4 border border-red-200/50 shadow-lg">
                 {/* Image Preview */}
-                <div className="bg-gradient-to-br from-red-100 to-rose-200 h-40 rounded-2xl mb-3 flex items-center justify-center text-gray-400">
-                  Request Image
+                <div className="bg-gradient-to-br from-red-100 to-rose-200 h-64 rounded-2xl mb-3 overflow-hidden shadow-inner">
+                  <img
+                    src={request.imageUrl}
+                    alt="Request"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
 
                 {/* Request Details */}
