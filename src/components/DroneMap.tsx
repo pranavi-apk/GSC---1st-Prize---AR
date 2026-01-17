@@ -1,7 +1,10 @@
-import { Plane, MapPin, Users } from 'lucide-react';
+import { Plane, MapPin, Users, Activity } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useState, useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+// ... (icons remain equal)
 
 // Custom icons
 const disasterIcon = new L.Icon({
@@ -49,6 +52,40 @@ const drones = [
 ];
 
 export function DroneMap() {
+  const [activeDisasters, setDisasters] = useState(disasters);
+  const [activeDrones, setDrones] = useState(drones);
+  const [lastUpdate, setLastUpdate] = useState(new Date());
+
+  // Simulate Real-time Govt Data Stream
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // 1. Simulate new Govt Alert (BNPB)
+      const newAlertChance = Math.random();
+      if (newAlertChance > 0.7) {
+        const newDisaster = {
+          lat: -6.2 + (Math.random() - 0.5) * 0.1,
+          lng: 106.8 + (Math.random() - 0.5) * 0.1,
+          title: `New Alert: Zone-${Math.floor(Math.random() * 100)}`,
+          severity: 'Critical'
+        };
+        
+        setDisasters(prev => [...prev.slice(-4), newDisaster]); // Keep last 5
+
+        // 2. Auto-Dispatch Drone to new location
+        const newDrone = {
+          lat: newDisaster.lat,
+          lng: newDisaster.lng,
+          status: 'responding',
+          id: Date.now()
+        };
+        setDrones(prev => [...prev, newDrone]);
+        setLastUpdate(new Date());
+      }
+    }, 3000); // Check for "new data" every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const getDroneIcon = (status: string) => {
     switch (status) {
       case 'responding':
@@ -66,8 +103,16 @@ export function DroneMap() {
     <div className="min-h-full bg-gradient-to-br from-red-50 to-rose-100">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-xl border-b border-red-200/50 px-4 py-4 sticky top-0 z-10 shadow-lg">
-        <h1 className="text-gray-900">Real-Time Drone Map</h1>
-        <p className="text-sm text-gray-600">Monitor relief drones assisting people</p>
+        <div className="flex justify-between items-center">
+            <div>
+                <h1 className="text-gray-900">Real-Time Drone Map</h1>
+                <p className="text-sm text-gray-600">Monitor relief drones assisting people</p>
+            </div>
+            <div className="flex items-center gap-2 bg-white/50 px-3 py-1 rounded-full border border-red-100">
+                <Activity size={14} className="text-green-600 animate-pulse" />
+                <span className="text-xs text-gray-600">Live BNPB Uplink: Active</span>
+            </div>
+        </div>
       </header>
 
       <div className="p-4 space-y-4">
@@ -84,7 +129,7 @@ export function DroneMap() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {/* Disaster Markers */}
-            {disasters.map((disaster) => (
+            {activeDisasters.map((disaster) => (
               <Marker key={disaster.title} position={[disaster.lat, disaster.lng]} icon={disasterIcon}>
                 <Popup>
                   <div className="text-sm">
@@ -96,7 +141,7 @@ export function DroneMap() {
               </Marker>
             ))}
             {/* Drone Markers */}
-            {drones.map((drone) => (
+            {activeDrones.map((drone) => (
               <Marker
                 key={drone.id}
                 position={[drone.lat, drone.lng]}

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, Loader2 } from 'lucide-react';
 import { llmService } from '../services/llmService';
 
@@ -14,6 +14,9 @@ const QUICK_PROMPTS = [
   'Nearest evacuation route',
   'First aid for injuries',
   'How to purify water?',
+  'Earthquake safety tips',
+  'Emergency kit checklist',
+  'What to do in a power outage?',
 ];
 
 
@@ -31,7 +34,21 @@ export function AIAssistant() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [showQuickPrompts, setShowQuickPrompts] = useState(true);
+  // const [showQuickPrompts, setShowQuickPrompts] = useState(true); // Removed to keep prompts always visible
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -46,7 +63,7 @@ export function AIAssistant() {
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-    setShowQuickPrompts(false);
+    // setShowQuickPrompts(false); // Kept persistent as requested
 
     try {
       // Prepare messages for the LLM service
@@ -97,7 +114,12 @@ export function AIAssistant() {
           </div>
           <div>
             <h1 className="text-gray-900">AI Assistant</h1>
-            <p className="text-sm text-green-600">Online</p>
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-amber-500 ring-2 ring-amber-200'}`} />
+              <p className={`text-sm ${isOnline ? 'text-green-600' : 'text-amber-600 font-medium'}`}>
+                {isOnline ? 'Online' : 'Offline Mode'}
+              </p>
+            </div>
           </div>
         </div>
       </header>
@@ -139,7 +161,7 @@ export function AIAssistant() {
       <div className="fixed bottom-0 left-0 right-0 md:left-64 md:right-0 w-full md:w-auto bg-white/80 backdrop-blur-xl border-t border-red-200/50 p-4 pb-24 md:pb-4 shadow-lg md:flex md:justify-center md:border-t-0 md:border-l md:fixed md:top-0 md:bottom-0 md:h-screen">
         <div className="max-w-3xl mx-auto md:w-[calc(100%-256px)]">
           <div className="flex flex-wrap gap-2 mb-4">
-          {showQuickPrompts && QUICK_PROMPTS.map((prompt) => (
+          {QUICK_PROMPTS.map((prompt) => (
             <button
               key={prompt}
               onClick={() => setInput(prompt)}
